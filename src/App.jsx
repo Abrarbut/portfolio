@@ -346,7 +346,7 @@ export default function App() {
           Based in Islamabad, Pakistan.
         </p>
         <div className="contact__actions">
-          <a className="button button--primary" href="mailto:abrarbuttmi7@gmail.com">
+          <a className="button button--primary" href="mailto:abrarbuttmi7@gmail.com" target="_blank">
             abrarbuttmi7@gmail.com
           </a>
           <a className="button button--secondary" href="tel:+923279903862">
