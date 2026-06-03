@@ -357,7 +357,7 @@ export default function App() {
           <a href="https://github.com/Abrarbut" target="_blank" rel="noreferrer">
             GitHub
           </a>
-          <a href="https://www.linkedin.com/in/abrar-butt" target="_blank" rel="noreferrer">
+          <a href="https://www.linkedin.com/in/abrar-butt-bb761639a/" target="_blank" rel="noreferrer">
             LinkedIn
           </a>
         </div>
