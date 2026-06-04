@@ -289,24 +289,9 @@ export default function App() {
             </a>
           </div>
         </div>
-
         <div className="hero__visual" aria-label="Portfolio technical preview">
           <div className="visual-panel">
-            <img src={heroImage} alt="" />
-            <div className="terminal-card">
-              <div className="terminal-card__bar">
-                <span />
-                <span />
-                <span />
-              </div>
-              <code>
-                role: full-stack developer
-                <br />
-                focus: react + node + postgres
-                <br />
-                status: learning cloud + devops
-              </code>
-            </div>
+            <img src="profile.jpg" alt="" />
           </div>
         </div>
       </section>
