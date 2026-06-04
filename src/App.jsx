@@ -1,6 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import heroImage from "./assets/hero.png";
 import "./App.css";
+
+const THEME_STORAGE_KEY = "portfolio-theme";
+
+const THEME_OPTIONS = [
+  { label: "Light", value: "light" },
+  { label: "Dark", value: "dark" },
+  { label: "System", value: "system" },
+];
 
 const NAV_LINKS = [
   { label: "Work", id: "work" },
@@ -139,6 +147,44 @@ function useActiveSection(ids) {
   return active;
 }
 
+function getStoredThemeSetting() {
+  if (typeof window === "undefined") return "system";
+
+  const storedTheme = window.localStorage.getItem(THEME_STORAGE_KEY);
+  return THEME_OPTIONS.some((option) => option.value === storedTheme) ? storedTheme : "system";
+}
+
+function getSystemTheme() {
+  if (typeof window === "undefined") return "dark";
+  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+}
+
+function useThemePreference() {
+  const [themeSetting, setThemeSetting] = useState(getStoredThemeSetting);
+  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
+  const effectiveTheme = themeSetting === "system" ? systemTheme : themeSetting;
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");
+    const handleChange = () => setSystemTheme(mediaQuery.matches ? "light" : "dark");
+
+    handleChange();
+    mediaQuery.addEventListener("change", handleChange);
+    return () => mediaQuery.removeEventListener("change", handleChange);
+  }, []);
+
+  useLayoutEffect(() => {
+    document.documentElement.dataset.theme = effectiveTheme;
+    document.documentElement.style.colorScheme = effectiveTheme;
+  }, [effectiveTheme]);
+
+  useEffect(() => {
+    window.localStorage.setItem(THEME_STORAGE_KEY, themeSetting);
+  }, [themeSetting]);
+
+  return { effectiveTheme, setThemeSetting, themeSetting };
+}
+
 function ProjectCard({ project, index }) {
   return (
     <article className={`project-card project-card--${project.accent}`}>
@@ -161,6 +207,7 @@ function ProjectCard({ project, index }) {
 export default function App() {
   const sectionIds = useMemo(() => NAV_LINKS.map((link) => link.id), []);
   const activeSection = useActiveSection(sectionIds);
+  const { effectiveTheme, setThemeSetting, themeSetting } = useThemePreference();
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -196,6 +243,20 @@ export default function App() {
             </button>
           ))}
         </nav>
+
+        <div className="theme-setting" role="group" aria-label={`Theme setting. Current theme is ${effectiveTheme}.`}>
+          {THEME_OPTIONS.map((option) => (
+            <button
+              className={themeSetting === option.value ? "is-selected" : ""}
+              key={option.value}
+              type="button"
+              aria-pressed={themeSetting === option.value}
+              onClick={() => setThemeSetting(option.value)}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
 
         <button
           className="menu-toggle"
