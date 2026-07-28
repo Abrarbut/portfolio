@@ -406,6 +406,9 @@ export default function App() {
           <a href="https://www.linkedin.com/in/abrar-butt-bb761639a/" target="_blank" rel="noreferrer">
             LinkedIn
           </a>
+          <a href="https://leetcode.com/u/Abrarbutt/" target="_blank" rel="noreferrer">
+            LeetCode
+          </a>
         </div>
       </section>
 
